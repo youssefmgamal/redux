@@ -1,23 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { useDispatch } from "react-redux";
+import "./App.css";
+import TaskForm from "./components/addtask";
+import TaskList from "./components/listtasks";
+import { getfilteredTasks } from "./slices/todoslice";
+import { useState } from "react";
+
 
 function App() {
+  const [filter, setfilter] = useState("all");
+
+  const dispatch = useDispatch();
+
+  const handlefilter = (e) =>{
+ 
+    
+  dispatch(getfilteredTasks(filter))
+
+  }
+
+  const handlechange = (e) =>{
+
+    setfilter(e.target.value === "true" ? true : e.target.value === "false" ? false: "all")
+
+
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <TaskList/>
+      <TaskForm />
+      <br />
+      <select onChange={handlechange}>
+        <option value={"all"}>all</option>
+        <option value={true}>done</option>
+        <option value={false}>not done</option>
+      </select>
+      <button onClick={handlefilter}>filter</button>
     </div>
   );
 }
